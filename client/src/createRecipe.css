@@ -1,0 +1,25 @@
+form {
+  display: flex;
+  width: 80%;
+  max-width: 600px;
+  min-width: 300px;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  justify-self: center;
+  align-self: center;
+}
+
+.form-label {
+  padding: 5px 15px;
+  font-family: serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+.form-input {
+  margin: 5px 0;
+}
+
+button {
+  width: 200px;
+}
