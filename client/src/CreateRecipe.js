@@ -6,7 +6,7 @@ import './createRecipe.css';
 const defaultIngredientList = [
   {
     name: "",
-    quantity: 0,
+    quantity: "",
     unit: ""
   }
 ]
