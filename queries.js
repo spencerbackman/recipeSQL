@@ -52,7 +52,6 @@ recipeRouter.post('/', (req, res) => {
   const by = req.body.recipe.by;
   const description = req.body.recipe.description;
   const ingredients = req.body.recipe.ingredients;
-  console.log('INGREDIENTS!!!!!!!     ' + ingredients )
   client.query('INSERT INTO recipes (name, by, description) VALUES ($1, $2, $3) RETURNING id', [name, by, description])
     .then(res => {
       console.log(res.rows[0].id)
@@ -61,7 +60,6 @@ recipeRouter.post('/', (req, res) => {
       ingredients.map(item => {
         client.query('INSERT INTO ingredients (name) VALUES ($1) RETURNING ing_id', [item.name])
           .then(res => {
-            console.log(res.rows[0].ing_id)
             ing_id = res.rows[0].ing_id;
             client.query('INSERT INTO ingredientsToRecipes (quantity, quantity_unit, rec_id, ing_id) VALUES ($1, $2, $3, $4)', [item.quantity, item.unit, rec_id, ing_id])
               .then(res => console.log(res.rows[0]))

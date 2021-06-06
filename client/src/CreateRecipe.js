@@ -26,7 +26,6 @@ export default function CreateRecipe() {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Submitting Recipe: ${name} Author: ${by} Description: ${description} Ingredients: ${ingredientList}`);
     const recipe = {
       name: name,
       by: by,
@@ -38,9 +37,9 @@ export default function CreateRecipe() {
       'Access-Control-Allow-Methods': 'POST,OPTIONS'
     })
       .then(res => {
-        console.log(res);
-        console.log(res.data);
+        console.log(res)
       })
+      .catch(err => console.error(err))
       resetName();
       resetBy();
       resetDescription();
@@ -54,7 +53,6 @@ export default function CreateRecipe() {
         unit: ""
     }])
   }
-  console.log(ingredientList)
   return (
     <div>
       <form>
