@@ -26,15 +26,14 @@ export default function CreateRecipe() {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Submitting Name: ${name} ${by} ${description}`);
+    alert(`Submitting Recipe: ${name} Author: ${by} Description: ${description} Ingredients: ${ingredientList}`);
     const recipe = {
       name: name,
       by: by,
       description: description,
       ingredients: ingredientList
     }
-    console.log(recipe)
-    axios.post('http://localhost:3300/recipes', { recipe }, {
+    axios.post('/recipes', { recipe }, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST,OPTIONS'
     })
