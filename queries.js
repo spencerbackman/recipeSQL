@@ -12,15 +12,6 @@ const client = new Client({
 
 client.connect();
 
-// const Pool = require('pg').Pool;
-// const pool = new Pool({
-//   user: 'spencer',
-//   host: 'localhost',
-//   database: 'recipehub',
-//   password: process.env.PASSWORD,
-//   port: 5432
-// })
-
 recipeRouter.get('/', (req, res) => {
   client.query('SELECT * FROM recipes', (err, results) => {
     if(err) {
@@ -38,12 +29,6 @@ recipeRouter.get('/:id', (req, res) => {
         res.status(200).send(results)
       })
       .catch(err => console.error('Error executing query', err.stack))
-    // pool.query('SELECT * FROM recipes WHERE id = $1', [id], (err, results) => {
-    //   if(err) {
-    //     throw err;
-    //   }
-    //   response.status(200).json(results.rows)
-    // })
 })
 
 recipeRouter.post('/', (req, res) => {
@@ -69,96 +54,17 @@ recipeRouter.post('/', (req, res) => {
       })
     })
     .catch(err => console.error('Error executing query', err.stack))
-  // ingredients.map(item => {
-  //     pool.query('INSERT INTO ingredients (name) VALUES ($1) RETURNING ing_id', [item.name])
-  //       .then(res => {
-  //         console.log(res.rows[0].ing_id)
-  //         ing_id = res.rows[0].ing_id
-  //       })
-  //       .catch(err => console.error('Error executing query', err.stack))
-  //     pool.query('INSERT INTO ingredientsToRecipes (quantity, quantity_unit, rec_id, ing_id) VALUES ($1, $2, $3, $4)', [item.quantity, item.unit, rec_id, ing_id])
-  //       .then(res => console.log(res.rows[0]))
-  //       .catch(err => console.error('Error executing query', err.stack))
-  // })
-
-
-  // pool.query('
-  //   INSERT INTO recipes (name, by, description)
-  //   VALUES ($1, $2, $3)
-  //   RETURNING id as rec_id
-  //
-  //   INSERT INTO ingredients (name)
-  //   VALUES ($4)
-  //   RETURNING ing_id
-  //
-  //   INSERT INTO ingredientsToRecipes (quantity, quantity_unit, rec_id, ing_id)
-  //   VALUES ($5, $6, rec_id, ing_id);
-  // ',
-  // [name, by, description, ingredientName, ingredientQuantity, ingredientUnit],
-  // (err, results) => {
-  //   if(err) {
-  //     throw err;
-  //   }
-  //   res.status(201).send(`Recipe added with ID: ${results}`)
-  // })
 })
 
-// const getRecipes = (req, res) => {
-//   pool.query('SELECT * FROM recipe', (err, results) => {
-//     if(err) {
-//       console.log(err)
-//       throw err;
-//     }
-//     res.status(200).send(results);
-//   })
-// }
-//
-// const getRecipe = (req, res) => {
-//   const id = parseInt(req.params.id)
-//   pool.query('SELECT * FROM recipe WHERE id = $1', [id], (err, results) => {
-//     if(err) {
-//       throw err;
-//     }
-//     response.status(200).json(results.rows)
-//   })
-// }
-//
-//
-// const createRecipe = (req, res) => {
-//   const { name, by, date, cuisine } = req.body;
-//
-//   pool.query('INSERT INTO recipe (name, by, date, cuisine) VALUES ($1, $2, $3, $4)',
-//   [name, by, date, cuisine],
-//   (err, results) => {
-//     if(err) {
-//       throw err;
-//     }
-//     response.status(201).send(`Recipe added with ID: ${result.insertId}`)
-//   })
-// }
-//
-// const updateRecipe = (req, res) => {
-//   const id = parseInt(req.params.id);
-//   const { name, by, date, cuisine } = req.body;
-//
-//   pool.query('UPDATE recipes SET name = $1, by = $2, date = $3, cuisine = $4, id = $5',
-//     [name, by, date, cuisine, id], (err, results) => {
-//       if(err) {
-//         throw err;
-//       }
-//       response.status(200).send(`User modified with ID: ${id}`)
-//     })
-// }
-//
-// const deleteRecipe = (req, res) => {
-//   const id = parseInt(req.params.id);
-//
-//   pool.query('DELETE FROM recipes WHERE id = $1', [id], (err, results) => {
-//     if(err) {
-//       throw err;
-//     }
-//     response.status(200).send(`User deleted with ID: ${id}`)
-//   })
-// }
+recipeRouter.delete('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+
+  client.query('DELETE FROM recipes WHERE id = $1', [id], (err, results) => {
+    if(err) {
+      throw err;
+    }
+    response.status(200).send(`Recipe deleted with ID: ${id}`)
+  })
+})
 
 module.exports = recipeRouter;

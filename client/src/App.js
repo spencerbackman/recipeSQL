@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { Switch, Route } from 'react-router-dom';
-// import Home from './Home';
 import CreateRecipe  from './CreateRecipe';
 import axios from 'axios';
 import './App.css';
@@ -73,16 +71,7 @@ console.log(recipeDetails)
                 return (
                   <div>
                     <p className="recipeDetails">
-                      Item:
-                      {item.quantity}
-                    </p>
-                    <p className="recipeDetails">
-                      Quantity:
-                      {item.quantity_unit}
-                    </p>
-                    <p className="recipeDetails">
-                      ingredient:
-                      {item.name}
+                      {item.quantity} {item.quantity_unit} {item.name}
                     </p>
                   </div>
                 )
