@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useInput } from './inputHook';
 import axios from 'axios';
-import './createRecipe.css';
+import './styles/scss/createRecipe.scss';
 
 const defaultIngredientList = [
   {
@@ -54,24 +54,25 @@ export default function CreateRecipe() {
     }])
   }
   return (
-    <div>
-      <form>
+    <div id="create-recipe-page">
+      <form id="recipe-form">
         <label htmlFor="name" className="form-label">
-          Recipe Name: <br />
+          Recipe Name <br />
           <input className="form-input" type="text" name="name" {...bindName}/>
         </label>
         <label htmlFor="description" className="form-label">
-          Description: <br />
+          Description <br />
         <textarea className="form-input" type="text" name="description" {...bindDescription} />
         </label>
         <label htmlFor="by" className="form-label">
-          First + Last Name: <br />
+          Name <br />
           <input className="form-input" type="text" name="by" {...bindBy} />
         </label>
+        <section id="ing-form">
         {ingredientList.map((item, index) => (
-          <div className="table-row" key={index}>
+          <div key={index}>
             <label htmlFor="ingredientName">
-              Ingredient:
+              Ingredient
               <input name="name"
                 data-id={index}
                 type="text"
@@ -79,6 +80,7 @@ export default function CreateRecipe() {
                 onChange={handleIngredientChange} />
             </label>
             <label htmlFor="quantity">
+              Quantity
               <input name="quantity"
                 data-id={index}
                 type="number"
@@ -86,6 +88,7 @@ export default function CreateRecipe() {
                 onChange={handleIngredientChange} />
             </label>
             <label htmlFor="unit">
+              Unit
               <input name="unit"
                 data-id={index}
                 type="text"
@@ -94,9 +97,10 @@ export default function CreateRecipe() {
             </label>
           </div>
         ))}
-        <button onClick={addIngredient}> + Add Ingredient </button>
-        <button onClick={handleSubmit}>
-          Submit
+          <button onClick={addIngredient}> + Add Ingredient </button>
+        </section>
+        <button id="submit-button" onClick={handleSubmit}>
+          SUBMIT
         </button>
       </form>
     </div>

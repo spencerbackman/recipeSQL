@@ -1,0 +1,20 @@
+@import './styles.scss';
+
+#recipe-page {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+}
+
+.recipe-section h1 {
+  font-family: $sans;
+}
+.recipe-section p {
+  font-family: $sans;
+  font-size: 14px;
+}
+.recipe-section p i {
+  margin-right: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}

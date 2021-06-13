@@ -1,0 +1,21 @@
+@import './styles.scss';
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: auto;
+  overflow-x: hidden;
+  padding-top: 70px;
+}
+
+.App {
+  height: auto;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  font-family: $sans;
+}

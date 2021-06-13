@@ -1,0 +1,54 @@
+@import './styles.scss';
+
+#home-page {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  top: 0;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+#recipes-table {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border-collapse: collapse;
+  min-width: 300px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
+#recipes-table thead tr {
+  background-color: $light-blue;
+  color: $black;
+  text-align: center;
+  border-bottom: 2px solid $dark-gray;
+  font-family: $sans2;
+  font-size: 15px;
+}
+#recipes-table tbody tr {
+  font-family: $sans;
+  font-size: 12px;
+}
+#recipes-table tbody tr:nth-of-type(even) {
+  background-color: $white;
+}
+#recipes-table tbody tr:nth-of-type(odd) {
+  background-color: $white2;
+}
+#recipes-table tbody tr:last-of-type {
+  border-bottom: 2px solid $light-blue;
+}
+#recipes-table tbody tr:hover {
+  background-color: $blue;
+  cursor: pointer;
+  color: $white;
+}
+th {
+  padding: 10px 0px;
+  margin: 0;
+}
+td {
+  padding: 15px 10px;
+}

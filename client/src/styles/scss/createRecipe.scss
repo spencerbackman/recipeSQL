@@ -1,0 +1,116 @@
+@import './styles.scss';
+
+#create-recipe-page  {
+  display: flex;
+  flex-flow: column;
+  width: 80%;
+  max-width: 1200px;
+  margin: 25px auto;
+}
+
+#recipe-form {
+  width: 80%;
+  max-width: 900px;
+  min-width: 300px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: flex-start;
+  justify-self: center;
+  align-self: center;
+}
+#recipe-form label {
+  width: 100%;
+  font-family: $sans2;
+  font-size: 16px;
+  color: $black;
+  margin: 10px 0;
+}
+#recipe-form label input {
+    color: $dark-gray;
+    font-family: $sans;
+    font-size: 12px;
+    border: 1px solid $dark-gray;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+}
+
+#recipe-form label textarea {
+  color: $dark-gray;
+  font-family: $sans;
+  font-size: 12px;
+  border: 1px solid $dark-gray;
+  width: 100%;
+}
+
+#ing-form {
+  display: flex;
+  flex-flow: row;
+  width: 105%;
+  max-width: 90vw;
+  align-items: space-between;
+  margin-left: -10px;
+  margin-bottom: 25px;
+}
+#ing-form div {
+  display: flex;
+  flex-flow: row;
+  width: 75%;
+  align-items: space-evenly;
+  justify-content: space-evenly;
+}
+
+#ing-form div label {
+  display: flex;
+  flex-flow: column;
+  width: 30%;
+  margin: auto;
+  font-size: 14px;
+}
+
+#ing-form button:last-of-type {
+  border: 1px solid $dark-gray;
+  display: block;
+  height: 30px;
+  width: 23%;
+  margin: 0 0 0 2%;
+  border-radius: 15px;
+  background-color: $blue;
+  color: $white;
+  font-size: 12px;
+  font-family: $sans;
+  align-self: flex-end;
+}
+#ing-form button {
+  display: none;
+}
+.add-ing {
+  display: none;
+}
+.add-ing:last-child {
+  border: 1px solid $dark-gray;
+  width: auto;
+  height: auto;
+  padding: 5px 25px;
+  border-radius: 15px;
+  background-color: $blue;
+  color: $white;
+  font-size: 12px;
+  font-family: $sans;
+  align-self: center;
+  margin: 25px 0;
+}
+
+#submit-button {
+  border: 1px solid $dark-gray;
+  font-family: $sans;
+  font-size: 16px;
+  font-weight: bold;
+  color: $white;
+  background: $blue;
+  border-radius: 25px;
+  padding: 8px 50px;
+  margin: 25px auto;
+  align-self: center;
+}
