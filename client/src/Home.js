@@ -6,7 +6,7 @@ export default function Home() {
   const data = JSON.parse(localStorage.getItem('recipeTable'));
   const [ redirect, setRedirect ] = useState(false);
   const [ id, setId ] = useState(null);
-  const handleRowClick = (id) => {
+  const handleRowClick = (e, id) => {
     setId(id)
     setRedirect(true)
   }
@@ -22,7 +22,7 @@ export default function Home() {
         </thead>
         <tbody>
           {data.rows.map(rec => (
-            <tr key={rec.id} onClick={() => handleRowClick(rec.id)}>
+            <tr key={rec.id} onClick={(e) => handleRowClick(e, rec.id)}>
               <td> {rec.name} </td>
               <td> {rec.description} </td>
               <td> {rec.by} </td>
