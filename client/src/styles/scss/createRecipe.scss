@@ -46,12 +46,17 @@
 
 #ing-form {
   display: flex;
-  flex-flow: row;
+  flex-flow: column;
   width: 105%;
   max-width: 90vw;
   align-items: space-between;
   margin-left: -10px;
-  margin-bottom: 25px;
+}
+.ing-form-row {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
 }
 #ing-form div {
   display: flex;
@@ -82,7 +87,7 @@
   font-family: $sans;
   align-self: flex-end;
 }
-#ing-form button {
+.ing-form-row button {
   display: none;
 }
 .add-ing {

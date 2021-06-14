@@ -70,7 +70,7 @@ export default function CreateRecipe() {
         </label>
         <section id="ing-form">
         {ingredientList.map((item, index) => (
-          <div key={index}>
+          <div key={index} className="ing-form-row">
             <label htmlFor="ingredientName">
               Ingredient
               <input name="name"
@@ -97,7 +97,7 @@ export default function CreateRecipe() {
             </label>
           </div>
         ))}
-          <button onClick={addIngredient}> + Add Ingredient </button>
+        <button onClick={addIngredient}> + Add Ingredient </button>
         </section>
         <button id="submit-button" onClick={handleSubmit}>
           SUBMIT
