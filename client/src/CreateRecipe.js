@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useInput } from './inputHook';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import './styles/scss/createRecipe.scss';
 
@@ -16,9 +17,9 @@ export default function CreateRecipe() {
   const { value: name, bind:bindName, reset:resetName } = useInput('');
   const { value: by, bind: bindBy, reset: resetBy } = useInput('');
   const { value: description, bind: bindDescription, reset: resetDescription } = useInput('');
-  // const [ name, setName ] = useState('');
-  // const [ by, setBy ] = useState('');
-  // const [ description, setDescription ] = useState('');
+  const [ course, setCourse ] = useState('Appetizer');
+  const [ cuisine, setCuisine ] = useState('American');
+  const [ submitted, setSumbitted ] = useState(false);
   const handleIngredientChange = e => {
     const ingredients = [...ingredientList];
     ingredients[e.target.dataset.id][e.target.name] = e.target.value;
@@ -30,19 +31,22 @@ export default function CreateRecipe() {
       name: name,
       by: by,
       description: description,
+      course: course,
+      cuisine: cuisine,
       ingredients: ingredientList
     }
     axios.post('/recipes', { recipe }, {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST,OPTIONS'
-    })
-      .then(res => {
+    }).then(res => {
         console.log(res)
-      })
-      .catch(err => console.error(err))
+        setSumbitted(true)
+      }).catch(err => console.error(err))
       resetName();
       resetBy();
       resetDescription();
+      setCourse('Appetizer')
+      setCuisine('Asian')
       setIngredientList(defaultIngredientList);
   }
   const addIngredient = e => {
@@ -54,6 +58,9 @@ export default function CreateRecipe() {
     }])
   }
   return (
+    submitted ?
+      <Redirect to={{ path:"/" }} />
+    :
     <div id="create-recipe-page">
       <form id="recipe-form">
         <label htmlFor="name" className="form-label">
@@ -67,6 +74,32 @@ export default function CreateRecipe() {
         <label htmlFor="by" className="form-label">
           Name <br />
           <input className="form-input" type="text" name="by" {...bindBy} />
+        </label>
+        <label htmlFor="course" className="form-label">
+          Course <br />
+          <select value={course} onChange={e => setCourse(e.target.value)} name="course">
+            <option value="Appetizer"> Appetizer </option>
+            <option value="Breakfast"> Breakfast </option>
+            <option value="Cocktail"> Cocktail </option>
+            <option value="Dessert"> Dessert </option>
+            <option value="Dinner"> Dinner </option>
+            <option value="Lunch"> Lunch  </option>
+            <option value="Other"> Other </option>
+          </select>
+        </label>
+        <label htmlFor="cuisine" className="form-label">
+          Cuisine <br />
+          <select name="cuisine" value={cuisine} onChange={e => setCuisine(e.target.value)}>
+            <option value="American"> American </option>
+            <option value="Asian"> Asian </option>
+            <option value="French"> French </option>
+            <option value="Indian"> Indian </option>
+            <option value="Italian"> Italian </option>
+            <option value="Mediterranean"> Mediterranean </option>
+            <option value="Mexican"> Mexican </option>
+            <option value="Thai"> Thai </option>
+            <option value="Other"> Other </option>
+          </select>
         </label>
         <section id="ing-form">
         {ingredientList.map((item, index) => (

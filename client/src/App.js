@@ -8,11 +8,8 @@ import axios from 'axios';
 import './styles/scss/app.scss';
 
 export default function App() {
-  let data = JSON.parse(localStorage.getItem('recipeTable'));
   useEffect(() => {
-    if(!data) {
-      getData()
-    }
+    getData()
   })
   async function getData() {
     try {

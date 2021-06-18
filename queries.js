@@ -32,15 +32,16 @@ recipeRouter.get('/:id', (req, res) => {
 })
 
 recipeRouter.post('/', (req, res) => {
-  // const { name, by, date, cuisine } = req.body;
   const name = req.body.recipe.name;
   const by = req.body.recipe.by;
   const description = req.body.recipe.description;
   const ingredients = req.body.recipe.ingredients;
-  client.query('INSERT INTO recipes (name, by, description) VALUES ($1, $2, $3) RETURNING id', [name, by, description])
-    .then(res => {
-      console.log(res.rows[0].id)
-      const rec_id = res.rows[0].id;
+  const course = req.body.recipe.course;
+  const cuisine = req.body.recipe.cuisine;
+  client.query('INSERT INTO recipes (name, by, description, course, cuisine) VALUES ($1, $2, $3, $4, $5) RETURNING id', [name, by, description, course, cuisine])
+    .then(results => {
+      console.log(results.rows[0].id)
+      const rec_id = results.rows[0].id;
       let ing_id;
       ingredients.map(item => {
         client.query('INSERT INTO ingredients (name) VALUES ($1) RETURNING ing_id', [item.name])
@@ -49,11 +50,70 @@ recipeRouter.post('/', (req, res) => {
             client.query('INSERT INTO ingredientsToRecipes (quantity, quantity_unit, rec_id, ing_id) VALUES ($1, $2, $3, $4)', [item.quantity, item.unit, rec_id, ing_id])
               .then(res => console.log(res.rows[0]))
               .catch(err => console.error('Error executing query', err.stack))
-          })
-          .catch(err => console.error('Error executing query', err.stack))
+          }).catch(err => console.error('Error executing query', err.stack))
       })
+    }).then(results => {
+      return res.status(200).send(results)
     })
     .catch(err => console.error('Error executing query', err.stack))
+})
+
+recipeRouter.put('/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const name = req.body.recipe.name;
+  const by = req.body.recipe.by;
+  const description = req.body.recipe.description;
+  const course = req.body.recipe.course;
+  const cuisine = req.body.recipe.cuisine;
+  const ingredients = req.body.recipe.ingredients;
+  const ing_id = req.body.recipe.ing_id;
+  client.query(
+    'UPDATE recipes SET name = $1, by=$2, description=$3, course=$4, cuisine=$5 WHERE id=$6;',
+    [name, by, description, course, cuisine, id])
+    .then(results => console.log("UPDATE recipes results", results))
+    .catch(err => console.error('Error Executing Update recipes', err.stack))
+    .then(() => {
+      ingredients.map(ing => {
+        const ingName = ing.name;
+        const quantity = ing.quantity;
+        const unit = ing.quantity_unit;
+        const ingId = ing.ing_id;
+        client.query(
+          'UPDATE ingredients SET name=$1 WHERE ing_id=$2;', [ingName, ingId])
+          .then(results => console.log("UPDATE ingredients results", results))
+          .catch(err => console.error("Error Executing UPDATE ingredients", err))
+          .then(() => {
+            client.query(
+              'UPDATE ingredientsToRecipes SET quantity=$1, quantity_unit=$2 WHERE ing_id=$3;',
+              [quantity, unit, ingId])
+              .then(results => console.log("UPDATE ingredientsToRecipes results", results))
+              .catch(err => console.error('Error Executing UPDATE ingredientsToRecipes', err))
+          })
+    })
+    return res.status(201).send("RECIPE UPDATED")
+  })
+  // client.query(
+  //   'UPDATE recipes SET name = $1, by=$2, description=$3, course=$4, cuisine=$5 WHERE id=$6;', [name, by, description, course, cuisine, id]
+  // ).then(recRes => {
+  //   console.log(recRes.rows[0]);
+  //   ingredients.map(ing => {
+  //     const ingName = ing.name;
+  //     const quantity = ing.quantity;
+  //     const unit = ing.quantity_unit;
+  //     const ingId = ing.ing_id;
+  //     client.query(
+  //       'UPDATE ingredients SET name=$1 WHERE ing_id=$2;',
+  //       [ingName, ingId]
+  //     ).then(ingRes => {
+  //       client.query(
+  //         'UPDATE ingredientsToRecipes SET quantity=$1, quantity_unit=$2 WHERE ing_id=$3;',
+  //         [quantity, unit, ingId]
+  //       ).then(ingRecRes => {
+  //         console.log(ingRecRes.rows[0])
+  //       }).catch(err => console.error('Error Executing UPDATE ingredientsToRecipes', err.stack))
+  //     }).catch(err => console.error('Error Executing UPDATE ingredients', err.stack))
+  //   })
+  // }).catch(err => console.error('Error Executing UPDATE recipes', err.stack))
 })
 
 recipeRouter.delete('/:id', (req, res) => {
@@ -63,7 +123,7 @@ recipeRouter.delete('/:id', (req, res) => {
     if(err) {
       throw err;
     }
-    response.status(200).send(`Recipe deleted with ID: ${id}`)
+    res.status(200).send(`Recipe deleted with ID: ${id}`)
   })
 })
 
