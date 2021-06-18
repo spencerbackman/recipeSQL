@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import './styles/scss/home.scss';
 
@@ -6,11 +6,18 @@ export default function Home() {
   const data = JSON.parse(localStorage.getItem('recipeTable'));
   const [ redirect, setRedirect ] = useState(false);
   const [ id, setId ] = useState(null);
+  const [ loaded, setLoaded ] = useState(false);
+  useEffect(() => {
+    if(data) {
+      setLoaded(true)
+    }
+  }, [data])
   const handleRowClick = (id) => {
     setId(id)
     setRedirect(true)
   }
   return (
+    loaded ?
     <div id="home-page">
       <table id="recipes-table">
         <thead>
@@ -34,5 +41,6 @@ export default function Home() {
         <Redirect to={`/recipe/${id}`} />
       : null}
     </div>
+    : <div></div>
   )
 }
