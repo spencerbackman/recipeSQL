@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import './styles/scss/home.scss';
 
 export default function Home() {
-  const data = JSON.parse(localStorage.getItem('recipeTable'));
+  const [ recipes, setRecipes ] = useState(null);
   const [ redirect, setRedirect ] = useState(false);
   const [ id, setId ] = useState(null);
+  useEffect(() => {
+    getData()
+  }, [])
+  async function getData() {
+    try {
+      const data = await axios.get('/recipes', {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+      })
+      setRecipes(data.data.rows)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
 
   const handleRowClick = (id) => {
     setId(id)
     setRedirect(true)
   }
   return (
-    data ?
     <div id="home-page">
       <table id="recipes-table">
         <thead>
@@ -25,7 +40,8 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {data.rows.map(rec => (
+          {recipes ?
+            recipes.map(rec => (
             <tr key={rec.id} onClick={() => handleRowClick(rec.id)}>
               <td> {rec.name} </td>
               <td> {rec.cuisine} </td>
@@ -33,13 +49,12 @@ export default function Home() {
               <td> {rec.by} </td>
               <td className="total"> {rec.totalIngredients} </td>
             </tr>
-          ))}
+          )) : null}
         </tbody>
       </table>
       {redirect ?
         <Redirect to={`/recipe/${id}`} />
       : null}
     </div>
-    : <div></div>
   )
 }
