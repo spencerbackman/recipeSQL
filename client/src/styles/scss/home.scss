@@ -13,8 +13,9 @@
 }
 #recipes-table {
   width: 90%;
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 20px auto;
+  padding: 5px 10px;
   border-collapse: collapse;
   min-width: 300px;
   box-shadow: 0 0 20px rgba(0,0,0,0.15);
@@ -22,10 +23,10 @@
 #recipes-table thead tr {
   background-color: $light-blue;
   color: $black;
-  text-align: center;
   border-bottom: 2px solid $dark-gray;
   font-family: $sans2;
   font-size: 15px;
+  text-align: left;
 }
 #recipes-table tbody tr {
   font-family: $sans;
@@ -46,9 +47,49 @@
   color: $white;
 }
 th {
-  padding: 10px 0px;
+  padding: 10px;
   margin: 0;
+  width: auto;
 }
 td {
-  padding: 15px 10px;
+  padding: 10px;
+  width: auto;
+}
+
+@media(max-width: 750px) {
+  #recipes-table {
+    width: 100%;
+  }
+  #recipes-table thead tr {
+    font-size: 13px;
+    text-align: center;
+  }
+  #recipes-table tbody tr {
+    font-size: 10px;
+  }
+  .total {
+    text-align: center;
+  }
+  th {
+    width: 19%;
+  }
+  td{
+    width: 19%;
+  }
+}
+@media(max-width: 600px) {
+  #home-page {
+    overflow-x: auto;
+    width: auto;
+  }
+  #recipes-table {
+    overflow-x: auto;
+    left: 0;
+  }
+  th {
+    width: 25%;
+  }
+  td {
+    width: 25%;
+  }
 }

@@ -17,7 +17,7 @@ export default function Recipe() {
   let params = useParams();
   useEffect(() => {
     getData()
-  },[params.id])
+  },[])
   const getData = async () => {
     try {
       axios.get(`/recipes/${params.id}`,{

@@ -4,13 +4,15 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import Recipe from './Recipe';
 import Nav from './Nav';
+import Recipes from './Recipes';
+import Course from './Course';
 import axios from 'axios';
 import './styles/scss/app.scss';
 
 export default function App() {
   useEffect(() => {
     getData()
-  })
+  }, [])
   async function getData() {
     try {
       await axios.get('/recipes', {
@@ -35,6 +37,12 @@ export default function App() {
           <CreateRecipe />
         </Route>
         <Route path="/recipe/:id" children={<Recipe />}/>
+        <Route path="/all-recipes">
+          <Recipes />
+        </Route>
+        <Route path="/course">
+          <Course />
+        </Route>
       </Switch>
     </div>
   )

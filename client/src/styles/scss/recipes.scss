@@ -1,0 +1,12 @@
+@import './styles.scss';
+
+#all-recipes {
+  padding: 0;
+  margin: 0 auto;
+  width: 90%;
+}
+
+.recipes-name {
+  font-family: $sans;
+  font-weight: bold; 
+}

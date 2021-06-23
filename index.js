@@ -26,6 +26,8 @@ const corsOptions = {
 const db = require('./queries');
 
 app.use('/recipes', cors(), require('./queries'))
+app.use('/courses', cors(), require('./courses'))
+app.use('/ingredients', cors(), require('./ingredientQueries'))
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"))

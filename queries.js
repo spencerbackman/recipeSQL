@@ -1,19 +1,24 @@
 const express = require('express');
 const recipeRouter = express.Router();
 require("dotenv").config();
-const { Client } = require('pg');
-
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-
-client.connect();
+const client = require('./connectDatabase')
 
 recipeRouter.get('/', (req, res) => {
-  client.query('SELECT * FROM recipes', (err, results) => {
+  client.query(`
+    SELECT r.name,
+    r.by,
+    r.description,
+    r.course,
+    r.cuisine,
+    r.id,
+    COUNT(t.rec_id) as "totalIngredients"
+    FROM recipes as r
+    INNER JOIN (
+      SELECT rec_id
+      FROM ingredientsToRecipes
+    ) as t on r.id = t.rec_id
+    GROUP BY r.id;
+    `, (err, results) => {
     if(err) {
       throw err;
     }
@@ -23,7 +28,13 @@ recipeRouter.get('/', (req, res) => {
 
 recipeRouter.get('/:id', (req, res) => {
     const id = parseInt(req.params.id);
-    client.query('SELECT ingredientsToRecipes.ing_id, ingredientsToRecipes.rec_id, ingredientsToRecipes.quantity, ingredientsToRecipes.quantity_unit, ingredients.name FROM ingredientsToRecipes JOIN ingredients ON ingredientsToRecipes.ing_id = ingredients.ing_id WHERE ingredientsToRecipes.rec_id = $1', [id])
+    client.query(`
+      SELECT ingredientsToRecipes.ing_id, ingredientsToRecipes.rec_id, ingredientsToRecipes.quantity, ingredientsToRecipes.quantity_unit, ingredients.name
+      FROM ingredientsToRecipes
+      JOIN ingredients
+      ON ingredientsToRecipes.ing_id = ingredients.ing_id
+      WHERE ingredientsToRecipes.rec_id = $1
+      `, [id])
       .then(results => {
         console.log(results.rows[0])
         res.status(200).send(results)
@@ -92,33 +103,10 @@ recipeRouter.put('/:id', (req, res) => {
     })
     return res.status(201).send("RECIPE UPDATED")
   })
-  // client.query(
-  //   'UPDATE recipes SET name = $1, by=$2, description=$3, course=$4, cuisine=$5 WHERE id=$6;', [name, by, description, course, cuisine, id]
-  // ).then(recRes => {
-  //   console.log(recRes.rows[0]);
-  //   ingredients.map(ing => {
-  //     const ingName = ing.name;
-  //     const quantity = ing.quantity;
-  //     const unit = ing.quantity_unit;
-  //     const ingId = ing.ing_id;
-  //     client.query(
-  //       'UPDATE ingredients SET name=$1 WHERE ing_id=$2;',
-  //       [ingName, ingId]
-  //     ).then(ingRes => {
-  //       client.query(
-  //         'UPDATE ingredientsToRecipes SET quantity=$1, quantity_unit=$2 WHERE ing_id=$3;',
-  //         [quantity, unit, ingId]
-  //       ).then(ingRecRes => {
-  //         console.log(ingRecRes.rows[0])
-  //       }).catch(err => console.error('Error Executing UPDATE ingredientsToRecipes', err.stack))
-  //     }).catch(err => console.error('Error Executing UPDATE ingredients', err.stack))
-  //   })
-  // }).catch(err => console.error('Error Executing UPDATE recipes', err.stack))
 })
 
 recipeRouter.delete('/:id', (req, res) => {
   const id = parseInt(req.params.id);
-
   client.query('DELETE FROM recipes WHERE id = $1', [id], (err, results) => {
     if(err) {
       throw err;
